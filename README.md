@@ -241,16 +241,5 @@ Add responsive frontend styling
 The Telco Customer Churn dataset is publicly available (often from Kaggle).
 Check original licensing before redistribution.
 
-🤝 Need Help?
 
-If you want, I can also generate:
 
-A cleaner UI for index.html
-
-A full pipeline version of customer_churn_prediction.py
-
-A production-ready app.py
-
-A Dockerfile for deployment
-
-Just say the word, George 🔥
