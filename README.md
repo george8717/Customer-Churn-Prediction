@@ -1,104 +1,93 @@
-Customer Churn Prediction
-What this project does
+📘 Customer Churn Prediction — Machine Learning + Flask App
+🔍 What This Project Does
 
-This repository builds a small, end-to-end machine learning pipeline and simple web interface to predict whether a Telco customer will churn (i.e., stop using the service).
-It includes data preprocessing, model training, model artifact saving, and a Flask web app to run live predictions from user input.
+This project predicts whether a Telco customer is likely to churn (i.e., leave the service).
+It provides a complete ML workflow — data preprocessing, model training, evaluation, artifact saving — and a simple Flask web application to make real-time churn predictions from user input.
 
-Project overview (high level)
+This makes it a perfect end-to-end ML deployment mini-project.
 
-Input: customer features from the Telco dataset (demographics, account info, services, tenure, charges).
+📁 Project Structure
+.
+├── app.py
+├── customer_churn_prediction.py
+├── WA_Fn-UseC_-Telco-Customer-Churn.csv
+├── input.txt
+├── templates/
+│   └── index.html
+└── requirements.txt
 
-Process: clean & preprocess data, convert categorical features, train a classifier, evaluate performance, and save the trained model + preprocessing objects.
+🧩 Component Breakdown (Explained Clearly)
+1. app.py — The Web Application
 
-Output: a binary churn prediction (Yes/No) returned by a web UI or API endpoint.
+Entry point for the Flask app.
 
-This project is useful for learning:
+Loads saved model + preprocessing artifacts.
 
-Data cleaning & preprocessing
+Renders the UI (templates/index.html).
 
-Feature encoding and scaling
+Accepts form/JSON input and returns predictions.
 
-Model training, evaluation, and persistence
+Converts input into the same processed format used during training.
 
-Serving a model through a Flask web app
+2. customer_churn_prediction.py — Model Training Script
 
-File / folder structure — explained step by step
+This script:
 
-app.py
-Web application entry point (Flask).
-Responsibilities:
+Loads the Telco dataset
 
-Loads saved model artifacts (model, encoder/scaler, feature list).
+Cleans data (missing values, type conversions)
 
-Renders templates/index.html for a human-friendly form.
+Encodes categorical features
 
-Provides an API endpoint (e.g., /predict) that accepts form data or JSON and returns the prediction.
+Scales numeric features
 
-Converts incoming input into the same preprocessed format the model expects and runs .predict() or .predict_proba().
+Splits train/test
 
-customer_churn_prediction.py
-Training + evaluation script.
-Responsibilities:
+Trains a classifier (Logistic Regression / RandomForest / XGBoost)
 
-Loads WA_Fn-UseC_-Telco-Customer-Churn.csv.
+Evaluates performance
 
-Performs exploratory cleaning: handle missing values, fix data types, remove duplicates if any.
+Saves artifacts (model, encoder/scaler, feature order)
 
-Encodes categorical variables (OneHotEncoding / LabelEncoding / Ordinal as appropriate).
+3. WA_Fn-UseC_-Telco-Customer-Churn.csv — Dataset
 
-Scales numerical features where necessary (StandardScaler or MinMaxScaler).
+A popular public dataset containing:
 
-Splits data into train / test sets.
+Customer demographic info
 
-Trains a classifier (e.g., Logistic Regression, RandomForest, XGBoost).
+Account details
 
-Evaluates performance (accuracy, precision, recall, F1, confusion matrix, AUC).
+Services subscribed
 
-Saves artifacts: trained model (pickle/joblib), encoders/scalers, and a JSON/py file listing feature order.
+Monthly/total charges
 
-WA_Fn-UseC_-Telco-Customer-Churn.csv
-The Telco Customer Churn dataset. Contains customer records with churn label.
-Notes:
+Binary churn label
 
-Publicly available dataset — check original license before redistribution.
+4. templates/index.html — Web Interface
 
-Typical columns: customerID, gender, SeniorCitizen, Partner, Dependents, tenure, PhoneService, MultipleLines, InternetService, OnlineSecurity, OnlineBackup, DeviceProtection, TechSupport, StreamingTV, StreamingMovies, Contract, PaperlessBilling, PaymentMethod, MonthlyCharges, TotalCharges, Churn.
+Simple HTML form that:
 
-input.txt (optional)
-Example raw input (flat key:value pairs) used by the app/script for quick local testing (useful for CLI or simple API calls).
+Accepts all required customer inputs
 
-templates/index.html
-HTML template used by Flask to render a simple form for entering customer fields and getting a prediction.
-It should:
+Sends request to /predict
 
-Present friendly labels for each feature (dropdowns for categorical fields, sliders/textboxes for numeric).
+Displays churn prediction results
 
-Submit a POST to /predict (or whichever endpoint app.py defines).
+5. input.txt — Example Input (Optional)
 
-Display the predicted class and optionally probability.
+Useful for quick testing via scripts or API calls.
 
-requirements.txt
-Python package list required to run this project. Typical packages:
+6. requirements.txt
 
-flask
+Lists all necessary Python packages (Flask, pandas, scikit-learn, joblib, etc.).
 
-pandas
-
-scikit-learn
-
-joblib (or pickle)
-
-optional: xgboost, flask-cors, gunicorn
-Pin versions if you want reproducibility.
-
-Step-by-step setup & usage
-1. Create and activate a virtual environment (Windows PowerShell)
+⚙️ Setup Instructions
+1. Create and activate a virtual environment
+Windows PowerShell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 
-
-macOS / Linux:
-
+macOS / Linux
 python3 -m venv venv
 source venv/bin/activate
 
@@ -107,29 +96,37 @@ pip install -r requirements.txt
 
 3. Train the model (generate artifacts)
 
-Run the training script to preprocess the data, train a model, evaluate it, and save artifacts (model + preprocessors).
+Run:
 
 python customer_churn_prediction.py
 
 
-What to expect from this script:
+This will:
 
-Console logs about data shapes, missing values handled, and model metrics.
+Preprocess the raw dataset
 
-Output files like model.joblib, encoder.joblib, scaler.joblib, and features.json (names depend on your implementation).
+Train an ML model
 
-4. Run the web app
+Evaluate metrics
+
+Save:
+
+model.joblib
+
+preprocessor.joblib (or encoder/scaler)
+
+features.json (feature order)
+
+4. Run the Flask web app
 python app.py
 
 
-The app usually starts on http://127.0.0.1:5000/. Open that in your browser to use the form-based UI.
+Then open:
+👉 http://127.0.0.1:5000/
 
-The app’s /predict endpoint will consume form data (POST) or JSON.
+You will see the churn prediction form.
 
-Example API usage (curl)
-
-If app.py exposes a JSON API at /predict, you can call it like this:
-
+🌐 Example API Request (JSON)
 curl -X POST http://127.0.0.1:5000/predict \
   -H "Content-Type: application/json" \
   -d '{
@@ -146,142 +143,114 @@ curl -X POST http://127.0.0.1:5000/predict \
   }'
 
 
-Response (example):
+Example response:
 
 {
   "prediction": "Yes",
   "probability": 0.82
 }
 
+🧠 What Happens Internally (Quick ML Flow)
+1. Data Cleaning
 
-If your app uses form POST, use the HTML UI or curl -F.
+Convert TotalCharges to numeric
 
-Model & preprocessing details — what typically happens inside customer_churn_prediction.py
+Fill/drop missing rows
 
-Load data
-df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
+Convert categories like Yes/No → 1/0
 
-Data cleaning
+2. Preprocessing
 
-Convert TotalCharges to numeric (some entries may be blank -> NaN) and fill or drop appropriately.
+One-hot encode categorical vars
 
-Fill missing values or remove rows with incomplete crucial fields.
+Scale numeric vars (tenure, MonthlyCharges, TotalCharges)
 
-Convert SeniorCitizen to int/boolean.
+3. Model Training
 
-Feature selection / engineering
+Typical models used:
 
-Drop customerID (identifier not useful for prediction).
+Logistic Regression (baseline)
 
-Create tenure buckets (optional): e.g., 0-12, 12-24, 24+.
+RandomForestClassifier
 
-Create interaction features if helpful (e.g., has_internet = InternetService != "No").
+XGBoost (high accuracy)
 
-Encode categorical variables
+4. Evaluation
 
-For nominal categories: OneHotEncoder or pd.get_dummies.
+Metrics printed:
 
-For binary categories: map Yes/No to 1/0.
+Accuracy
 
-Save encoders so the same mapping is applied at inference time.
+Precision
 
-Scale numeric variables
+Recall
 
-Use StandardScaler or MinMaxScaler for MonthlyCharges, TotalCharges, tenure.
+F1-score
 
-Save scaler for inference.
+ROC AUC
 
-Train/test split
+5. Saving Artifacts
 
-train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+Using joblib.dump():
 
-Model training
+model
 
-Baseline: Logistic Regression.
+encoders/scalers
 
-Stronger: RandomForestClassifier or XGBoost for better performance.
+ordered feature list
 
-Tune hyperparameters with GridSearchCV (optional).
+💡 Inside app.py: Prediction Flow
 
-Evaluation
+Load model + preprocessing objects
 
-Print metrics: accuracy, precision, recall, F1, ROC AUC.
+Receive input from user
 
-Plot or print confusion matrix.
+Build DataFrame with correct columns
 
-Save artifacts
+Apply preprocessing
 
-joblib.dump(model, "model.joblib")
+Run model prediction
 
-joblib.dump(preprocessor, "preprocessor.joblib") OR save separate encoder & scaler.
+Return:
 
-Save a features.json with the exact ordered list of features the model expects.
+churn: Yes/No
 
-How app.py should use saved artifacts (high level)
+probability score
 
-Load model.joblib and preprocessor.joblib (or encoder + scaler).
+🛠️ Troubleshooting
+Problem	Fix
+Flask won't start	Check port or reinstall Flask
+Model not found	Run customer_churn_prediction.py first
+Wrong input format	Ensure field names match training features
+Unseen category error	Set handle_unknown="ignore" in encoder
+Type conversion errors	Ensure numeric fields are parsed properly
+🚀 Possible Improvements
 
-When a request arrives:
+Create scikit-learn Pipeline to simplify preprocessing
 
-Parse input (form or JSON).
+Add Docker support
 
-Build a DataFrame or array with the same column order saved in features.json.
+Add SHAP explainability graphs
 
-Apply the saved encoder/scaler/pipeline to the input.
+Deploy on Render / Railway / AWS
 
-Call model.predict() and optionally model.predict_proba().
+Add responsive frontend styling
 
-Return a JSON response or render the result on index.html.
+📜 Dataset & License
 
-Example minimal app.py flow (pseudo)
-from flask import Flask, request, render_template, jsonify
-import joblib
-import pandas as pd
-app = Flask(__name__)
+The Telco Customer Churn dataset is publicly available (often from Kaggle).
+Check original licensing before redistribution.
 
-model = joblib.load("model.joblib")
-preprocessor = joblib.load("preprocessor.joblib")
-feature_order = joblib.load("features.joblib")  # or JSON
+🤝 Need Help?
 
-@app.route("/")
-def home():
-    return render_template("index.html")
+If you want, I can also generate:
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = request.get_json() or request.form.to_dict()
-    df = pd.DataFrame([data], columns=feature_order)
-    X = preprocessor.transform(df)
-    prob = model.predict_proba(X)[0,1]
-    pred = "Yes" if prob > 0.5 else "No"
-    return jsonify({"prediction": pred, "probability": float(prob)})
+A cleaner UI for index.html
 
-Troubleshooting (common issues & fixes)
+A full pipeline version of customer_churn_prediction.py
 
-Server won’t start: check port conflicts; ensure Flask is installed.
+A production-ready app.py
 
-Model artifact not found: run training script first and confirm the artifact filenames/paths.
+A Dockerfile for deployment
 
-Input mismatch error: ensure the input dictionary keys match feature names and ordering from training.
-
-Different categories: during inference, unseen categorical values will break encoders — handle with handle_unknown="ignore" in scikit-learn encoders, or map unseen values to an “other” bucket.
-
-Numeric parsing errors: ensure strings like TotalCharges are converted to numeric during training and the same conversion is used at inference.
-
-Suggestions / Next steps (improvements)
-
-Add a Dockerfile and docker-compose.yml for reproducible deployment.
-
-Wrap preprocessing + model in a single scikit-learn Pipeline and save that pipeline only (simpler inference).
-
-Add unit tests for preprocessing & API.
-
-Add CI to retrain automatically when data updates.
-
-Add model explainability: SHAP values to show why a user was predicted to churn.
-
-Add a simple frontend dashboard with examples and dataset stats.
-
-Data & License
-
-WA_Fn-UseC_-Telco-Customer-Churn.csv is commonly available on Kaggle. Confirm the dataset license before redistribution.
+Just say the word, George 🔥
