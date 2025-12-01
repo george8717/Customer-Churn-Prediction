@@ -1,245 +1,55 @@
-📘 Customer Churn Prediction — Machine Learning + Flask App
+📘 Customer Churn Prediction — ML Model + Flask Web App
+
+This project predicts whether a telecom customer is likely to churn (leave the service).
+It combines a machine learning model with a simple web interface, allowing users to input customer details and instantly see churn predictions.
+
+The goal is to provide a complete, working end-to-end ML solution — from data preprocessing and model training to deployment through a Flask application.
+
 🔍 What This Project Does
 
-This project predicts whether a Telco customer is likely to churn (i.e., leave the service).
-It provides a complete ML workflow — data preprocessing, model training, evaluation, artifact saving — and a simple Flask web application to make real-time churn predictions from user input.
+Loads and preprocesses the Telco Customer Churn dataset
 
-This makes it a perfect end-to-end ML deployment mini-project.
+Trains a machine learning model (Logistic Regression / RandomForest / XGBoost)
 
-📁 Project Structure
-.
-├── app.py
-├── customer_churn_prediction.py
-├── WA_Fn-UseC_-Telco-Customer-Churn.csv
-├── input.txt
-├── templates/
-│   └── index.html
-└── requirements.txt
+Saves preprocessing artifacts (encoders, scalers, feature order)
 
-🧩 Component Breakdown (Explained Clearly)
-1. app.py — The Web Application
+Provides a Flask-based web app where users can enter customer info
 
-Entry point for the Flask app.
+Predicts:
 
-Loads saved model + preprocessing artifacts.
+Churn (Yes/No)
 
-Renders the UI (templates/index.html).
+Probability score
 
-Accepts form/JSON input and returns predictions.
+Essentially, it shows how to build and deploy a real ML model in a production-like workflow.
 
-Converts input into the same processed format used during training.
+🛠️ Tech Stack Used
+Machine Learning
 
-2. customer_churn_prediction.py — Model Training Script
+Python
 
-This script:
+pandas — data cleaning & preprocessing
 
-Loads the Telco dataset
+NumPy — numerical operations
 
-Cleans data (missing values, type conversions)
+scikit-learn — encoding, scaling, model training, evaluation
 
-Encodes categorical features
+XGBoost (optional) — improved accuracy
 
-Scales numeric features
+joblib — saving ML artifacts
 
-Splits train/test
+Backend / Deployment
 
-Trains a classifier (Logistic Regression / RandomForest / XGBoost)
+Flask — lightweight web framework to serve predictions
 
-Evaluates performance
+HTML (Jinja templates) — form-based user interface
 
-Saves artifacts (model, encoder/scaler, feature order)
+Environment / Tools
 
-3. WA_Fn-UseC_-Telco-Customer-Churn.csv — Dataset
+Virtual Environment (venv)
 
-A popular public dataset containing:
+JSON for API requests
 
-Customer demographic info
-
-Account details
-
-Services subscribed
-
-Monthly/total charges
-
-Binary churn label
-
-4. templates/index.html — Web Interface
-
-Simple HTML form that:
-
-Accepts all required customer inputs
-
-Sends request to /predict
-
-Displays churn prediction results
-
-5. input.txt — Example Input (Optional)
-
-Useful for quick testing via scripts or API calls.
-
-6. requirements.txt
-
-Lists all necessary Python packages (Flask, pandas, scikit-learn, joblib, etc.).
-
-⚙️ Setup Instructions
-1. Create and activate a virtual environment
-Windows PowerShell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-
-macOS / Linux
-python3 -m venv venv
-source venv/bin/activate
-
-2. Install dependencies
-pip install -r requirements.txt
-
-3. Train the model (generate artifacts)
-
-Run:
-
-python customer_churn_prediction.py
-
-
-This will:
-
-Preprocess the raw dataset
-
-Train an ML model
-
-Evaluate metrics
-
-Save:
-
-model.joblib
-
-preprocessor.joblib (or encoder/scaler)
-
-features.json (feature order)
-
-4. Run the Flask web app
-python app.py
-
-
-Then open:
-👉 http://127.0.0.1:5000/
-
-You will see the churn prediction form.
-
-🌐 Example API Request (JSON)
-curl -X POST http://127.0.0.1:5000/predict \
-  -H "Content-Type: application/json" \
-  -d '{
-    "gender": "Male",
-    "SeniorCitizen": 0,
-    "Partner": "Yes",
-    "Dependents": "No",
-    "tenure": 12,
-    "PhoneService": "Yes",
-    "InternetService": "DSL",
-    "Contract": "Month-to-month",
-    "MonthlyCharges": 70.5,
-    "TotalCharges": 700.0
-  }'
-
-
-Example response:
-
-{
-  "prediction": "Yes",
-  "probability": 0.82
-}
-
-🧠 What Happens Internally (Quick ML Flow)
-1. Data Cleaning
-
-Convert TotalCharges to numeric
-
-Fill/drop missing rows
-
-Convert categories like Yes/No → 1/0
-
-2. Preprocessing
-
-One-hot encode categorical vars
-
-Scale numeric vars (tenure, MonthlyCharges, TotalCharges)
-
-3. Model Training
-
-Typical models used:
-
-Logistic Regression (baseline)
-
-RandomForestClassifier
-
-XGBoost (high accuracy)
-
-4. Evaluation
-
-Metrics printed:
-
-Accuracy
-
-Precision
-
-Recall
-
-F1-score
-
-ROC AUC
-
-5. Saving Artifacts
-
-Using joblib.dump():
-
-model
-
-encoders/scalers
-
-ordered feature list
-
-💡 Inside app.py: Prediction Flow
-
-Load model + preprocessing objects
-
-Receive input from user
-
-Build DataFrame with correct columns
-
-Apply preprocessing
-
-Run model prediction
-
-Return:
-
-churn: Yes/No
-
-probability score
-
-🛠️ Troubleshooting
-Problem	Fix
-Flask won't start	Check port or reinstall Flask
-Model not found	Run customer_churn_prediction.py first
-Wrong input format	Ensure field names match training features
-Unseen category error	Set handle_unknown="ignore" in encoder
-Type conversion errors	Ensure numeric fields are parsed properly
-🚀 Possible Improvements
-
-Create scikit-learn Pipeline to simplify preprocessing
-
-Add Docker support
-
-Add SHAP explainability graphs
-
-Deploy on Render / Railway / AWS
-
-Add responsive frontend styling
-
-📜 Dataset & License
-
-The Telco Customer Churn dataset is publicly available (often from Kaggle).
-Check original licensing before redistribution.
-
+GitHub for version control
 
 
